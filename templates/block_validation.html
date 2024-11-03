@@ -1,0 +1,260 @@
+{% extends "base.html" %}
+
+{% block title %}Block Validation Guide{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h1 class="display-5 mb-0">
+            <i class="bi bi-shield-check me-2"></i>
+            Block Validation Guide
+        </h1>
+    </div>
+    <div class="col-auto">
+        <a href="/explorer" class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left me-1"></i>
+            Back to Explorer
+        </a>
+    </div>
+</div>
+
+<!-- Network Status -->
+<div class="card mb-4">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-hdd-network me-2"></i>
+            Network Status
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="alert {% if network_status.is_ready %}alert-success{% else %}alert-warning{% endif %}">
+            <h6 class="alert-heading">
+                <i class="bi {% if network_status.is_ready %}bi-check-circle{% else %}bi-exclamation-triangle{% endif %} me-2"></i>
+                Network Consensus Status
+            </h6>
+            <p class="mb-0">
+                {% if network_status.is_ready %}
+                Network is ready for consensus validation
+                {% else %}
+                Network needs more active nodes for consensus
+                {% endif %}
+            </p>
+        </div>
+
+        <div class="row g-4 mt-2">
+            <div class="col-md-6">
+                <div class="card border-info">
+                    <div class="card-body">
+                        <h6 class="card-title text-info">Network Requirements</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Minimum Nodes Required
+                                <span class="badge bg-info">{{ network_status.min_nodes }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Consensus Threshold
+                                <span class="badge bg-info">{{ (network_status.consensus_threshold * 100)|int }}%</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Required Active Nodes
+                                <span class="badge bg-info">{{ network_status.required_nodes }}</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-primary">
+                    <div class="card-body">
+                        <h6 class="card-title text-primary">Current Status</h6>
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Total Nodes
+                                <span class="badge bg-primary">{{ network_status.total_nodes }}</span>
+                            </li>
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                Active Nodes
+                                <span class="badge {% if network_status.active_nodes >= network_status.required_nodes %}bg-success{% else %}bg-warning{% endif %}">
+                                    {{ network_status.active_nodes }}
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Validation Process -->
+<div class="card mb-4">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-diagram-3 me-2"></i>
+            Validation Process
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-12">
+                <div class="alert alert-info">
+                    <h6 class="alert-heading">
+                        <i class="bi bi-lightbulb me-2"></i>
+                        Understanding Block Validation
+                    </h6>
+                    <p>Each block in the blockchain undergoes a thorough validation process to ensure its integrity and authenticity through our combined Proof-of-Work (PoW) and Practical Byzantine Fault Tolerance (PBFT) consensus mechanisms.</p>
+                </div>
+            </div>
+
+            <!-- Step 1: Network Check -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-primary bg-opacity-10">
+                        <h6 class="mb-0">
+                            <i class="bi bi-1-circle me-2"></i>
+                            Network Verification
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Minimum {{ network_status.min_nodes }} active nodes required
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                {{ (network_status.consensus_threshold * 100)|int }}% consensus threshold
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 2: Block Integrity -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-success bg-opacity-10">
+                        <h6 class="mb-0">
+                            <i class="bi bi-2-circle me-2"></i>
+                            Block Integrity
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Hash verification
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Previous block linkage
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Proof-of-Work verification
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3: Transaction Validation -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-info bg-opacity-10">
+                        <h6 class="mb-0">
+                            <i class="bi bi-3-circle me-2"></i>
+                            Transaction Validation
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Signature verification
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Balance sufficiency
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Transaction format
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4: PBFT Consensus -->
+            <div class="col-md-6">
+                <div class="card h-100">
+                    <div class="card-header bg-warning bg-opacity-10">
+                        <h6 class="mb-0">
+                            <i class="bi bi-4-circle me-2"></i>
+                            PBFT Consensus
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <ul class="list-unstyled mb-0">
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Pre-prepare phase
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Prepare phase
+                            </li>
+                            <li class="mb-2">
+                                <i class="bi bi-check-circle text-success me-2"></i>
+                                Commit phase
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Validation Status Guide -->
+<div class="card">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-info-circle me-2"></i>
+            Understanding Validation Status
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-warning">
+                    <div class="card-body text-center">
+                        <i class="bi bi-hourglass-split display-4 text-warning mb-3"></i>
+                        <h6 class="card-title text-warning">Pending</h6>
+                        <p class="small mb-0">Block is awaiting validation from network nodes</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-success">
+                    <div class="card-body text-center">
+                        <i class="bi bi-check-circle display-4 text-success mb-3"></i>
+                        <h6 class="card-title text-success">Validated</h6>
+                        <p class="small mb-0">Block has passed all validation checks</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-danger">
+                    <div class="card-body text-center">
+                        <i class="bi bi-x-circle display-4 text-danger mb-3"></i>
+                        <h6 class="card-title text-danger">Invalid</h6>
+                        <p class="small mb-0">Block failed validation checks</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,219 @@
+{% extends "base.html" %}
+
+{% block title %}Block Details{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h1 class="display-5 mb-0">
+            <i class="bi bi-box me-2"></i>
+            Block #{{ block.id }}
+        </h1>
+    </div>
+    <div class="col-auto">
+        <div class="btn-group">
+            <a href="/explorer/validation-guide" class="btn btn-outline-info">
+                <i class="bi bi-question-circle me-1"></i>
+                Validation Guide
+            </a>
+            {% if block.id > 1 %}
+            <a class="btn btn-outline-primary" href="/explorer/block/{{ block.id - 1 }}" data-bs-toggle="tooltip" title="Previous Block">
+                <i class="bi bi-chevron-left"></i>
+            </a>
+            {% endif %}
+            <a class="btn btn-outline-primary" href="/explorer/block/{{ block.id + 1 }}" data-bs-toggle="tooltip" title="Next Block">
+                <i class="bi bi-chevron-right"></i>
+            </a>
+        </div>
+    </div>
+</div>
+
+{% if validation_errors %}
+<div class="alert alert-danger mb-4">
+    <h5 class="alert-heading d-flex align-items-center">
+        <i class="bi bi-exclamation-triangle-fill me-2"></i>
+        Validation Errors
+    </h5>
+    <ul class="list-unstyled mb-0">
+        {% for error in validation_errors %}
+        <li class="mb-2">
+            <div class="d-flex align-items-center">
+                <i class="bi bi-x-circle me-2"></i>
+                <div>
+                    <strong>{{ error.code }}:</strong>
+                    <span>{{ error.message }}</span>
+                </div>
+            </div>
+        </li>
+        {% endfor %}
+    </ul>
+</div>
+{% endif %}
+
+<div class="card mb-4">
+    <div class="card-header bg-body-tertiary">
+        <div class="d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="bi bi-info-circle me-2"></i>
+                Block Details
+            </h5>
+            {% if block.validation_status == 'pending' %}
+            <form action="/explorer/block/{{ block.id }}/validate" method="post" class="d-inline">
+                <button type="submit" class="btn btn-warning">
+                    <i class="bi bi-shield-check me-1"></i>
+                    Validate Block
+                </button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-info">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-info">
+                            <i class="bi bi-hash me-1"></i>
+                            Block Hash
+                        </h6>
+                        <code class="user-select-all">{{ block.hash }}</code>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 mb-4">
+                <div class="card h-100 border-primary">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-2 text-primary">
+                            <i class="bi bi-link me-1"></i>
+                            Previous Hash
+                        </h6>
+                        {% if block.previous_hash == '0'*64 %}
+                            <span class="badge bg-success">Genesis Block</span>
+                        {% else %}
+                            <a href="/explorer/block/{{ block.id - 1 }}" class="text-decoration-none">
+                                <code class="user-select-all">{{ block.previous_hash }}</code>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <div class="col-md-3">
+                <div class="card h-100 border-secondary">
+                    <div class="card-body text-center">
+                        <i class="bi bi-clock display-4 text-secondary mb-3"></i>
+                        <h6 class="card-subtitle mb-2 text-secondary">Timestamp</h6>
+                        <p class="mb-0">{{ block.timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-warning">
+                    <div class="card-body text-center">
+                        <i class="bi bi-trophy display-4 text-warning mb-3"></i>
+                        <h6 class="card-subtitle mb-2 text-warning">Nonce</h6>
+                        <p class="display-6 mb-0">{{ block.nonce }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 border-success">
+                    <div class="card-body text-center">
+                        <i class="bi bi-arrow-left-right display-4 text-success mb-3"></i>
+                        <h6 class="card-subtitle mb-2 text-success">Transactions</h6>
+                        <p class="display-6 mb-0">{{ block.transactions|length }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="card h-100 {% if block.validation_status == 'validated' %}border-success{% elif block.validation_status == 'invalid' %}border-danger{% else %}border-warning{% endif %}">
+                    <div class="card-body text-center">
+                        <i class="bi {% if block.validation_status == 'validated' %}bi-shield-check text-success{% elif block.validation_status == 'invalid' %}bi-shield-x text-danger{% else %}bi-shield text-warning{% endif %} display-4 mb-3"></i>
+                        <h6 class="card-subtitle mb-2 {% if block.validation_status == 'validated' %}text-success{% elif block.validation_status == 'invalid' %}text-danger{% else %}text-warning{% endif %}">Validation Status</h6>
+                        <div class="d-flex flex-column align-items-center">
+                            <span class="badge {% if block.validation_status == 'validated' %}bg-success{% elif block.validation_status == 'invalid' %}bg-danger{% else %}bg-warning{% endif %} mb-2">
+                                {{ block.validation_status|title }}
+                            </span>
+                            {% if block.validation_timestamp %}
+                            <small class="text-muted">
+                                {{ block.validation_timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') }}
+                            </small>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-arrow-left-right me-2"></i>
+            Block Transactions
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Transaction ID</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in block.transactions %}
+                    <tr>
+                        <td>
+                            <a href="/explorer/transaction/{{ tx.id }}" class="text-decoration-none">
+                                <i class="bi bi-hash me-1"></i>
+                                {{ tx.id }}
+                            </a>
+                        </td>
+                        <td>
+                            <code class="text-truncate d-inline-block" style="max-width: 200px;">
+                                {{ tx.sender }}
+                            </code>
+                        </td>
+                        <td>
+                            <code class="text-truncate d-inline-block" style="max-width: 200px;">
+                                {{ tx.recipient }}
+                            </code>
+                        </td>
+                        <td>
+                            <i class="bi bi-coin me-1"></i>
+                            {{ tx.amount }}
+                        </td>
+                        <td>
+                            {% if block.validation_status == 'validated' %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Verified
+                            </span>
+                            {% elif block.validation_status == 'invalid' %}
+                            <span class="badge bg-danger">
+                                <i class="bi bi-x-circle me-1"></i>
+                                Invalid
+                            </span>
+                            {% else %}
+                            <span class="badge bg-warning">
+                                <i class="bi bi-hourglass-split me-1"></i>
+                                Pending
+                            </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

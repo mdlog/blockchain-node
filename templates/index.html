@@ -1,0 +1,135 @@
+{% extends "base.html" %}
+
+{% block title %}Blockchain Wallet{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h1 class="display-5 mb-0">
+            <i class="bi bi-wallet2 me-2"></i>
+            Blockchain Wallet
+        </h1>
+    </div>
+</div>
+
+{% if wallet_address %}
+<div class="card mb-4 border-primary">
+    <div class="card-header bg-primary bg-opacity-25 d-flex justify-content-between align-items-center">
+        <h2 class="h5 mb-0">
+            <i class="bi bi-currency-bitcoin me-2"></i>
+            Wallet Balance
+        </h2>
+    </div>
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col">
+                <h3 class="display-4 mb-0">{{ balance }} coins</h3>
+                <p class="text-muted mt-2 mb-0">
+                    <i class="bi bi-key me-1"></i>
+                    Address: <code>{{ wallet_address }}</code>
+                </p>
+            </div>
+            <div class="col-auto">
+                <form action="/wallet/balance" method="post" class="d-inline">
+                    <button type="submit" class="btn btn-outline-primary" data-bs-toggle="tooltip" title="Update balance">
+                        <i class="bi bi-arrow-clockwise me-1"></i>
+                        Refresh
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<div class="row g-4">
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+                <i class="bi bi-plus-circle me-2"></i>
+                <h2 class="h5 mb-0">Create New Wallet</h2>
+            </div>
+            <div class="card-body">
+                <p class="text-muted mb-4">Generate a new wallet with public and private keys.</p>
+                <form action="/wallet/create" method="post">
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-wallet2 me-1"></i>
+                        Generate New Wallet
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card h-100">
+            <div class="card-header d-flex align-items-center">
+                <i class="bi bi-search me-2"></i>
+                <h2 class="h5 mb-0">Check Wallet Balance</h2>
+            </div>
+            <div class="card-body">
+                <form action="/wallet/balance" method="post">
+                    <div class="mb-3">
+                        <label for="wallet_address" class="form-label">Wallet Address</label>
+                        <textarea class="form-control font-monospace" id="wallet_address" name="wallet_address" rows="2" required
+                                placeholder="Enter wallet address..."></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-search me-1"></i>
+                        Check Balance
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex align-items-center">
+                <i class="bi bi-arrow-left-right me-2"></i>
+                <h2 class="h5 mb-0">Create Transaction</h2>
+            </div>
+            <div class="card-body">
+                <form action="/transaction/create" method="post">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <textarea class="form-control font-monospace" id="sender_private_key" name="sender_private_key" 
+                                        style="height: 100px" required placeholder="Enter private key"></textarea>
+                                <label for="sender_private_key">Private Key</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <textarea class="form-control font-monospace" id="sender" name="sender" 
+                                        style="height: 100px" required placeholder="Enter sender's public key"></textarea>
+                                <label for="sender">Sender Public Key</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <textarea class="form-control font-monospace" id="recipient" name="recipient" 
+                                        style="height: 100px" required placeholder="Enter recipient's public key"></textarea>
+                                <label for="recipient">Recipient Public Key</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating">
+                                <input type="number" class="form-control" id="amount" name="amount" step="0.01" required
+                                       placeholder="Enter amount">
+                                <label for="amount">Amount</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="bi bi-send me-1"></i>
+                                Create Transaction
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

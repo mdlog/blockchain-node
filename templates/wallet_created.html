@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+
+{% block title %}Wallet Created{% endblock %}
+
+{% block content %}
+<h1>Wallet Created Successfully</h1>
+
+<div class="alert alert-warning">
+    <strong>Important:</strong> Save these keys securely. You won't be able to recover them later!
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Your Wallet Keys</h2>
+    </div>
+    <div class="card-body">
+        <div class="mb-3">
+            <h3>Public Key</h3>
+            <textarea class="form-control" rows="5" readonly>{{ public_key }}</textarea>
+        </div>
+        <div class="mb-3">
+            <h3>Private Key</h3>
+            <textarea class="form-control" rows="5" readonly>{{ private_key }}</textarea>
+        </div>
+    </div>
+</div>
+
+<a href="/" class="btn btn-primary">Back to Home</a>
+{% endblock %}

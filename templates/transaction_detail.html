@@ -1,0 +1,136 @@
+{% extends "base.html" %}
+
+{% block title %}Transaction Details{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h1 class="display-5 mb-0">
+            <i class="bi bi-arrow-left-right me-2"></i>
+            Transaction Details
+        </h1>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-info-circle me-2"></i>
+            Transaction Information
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-info h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-3 text-info">
+                            <i class="bi bi-hash me-1"></i>
+                            Transaction ID
+                        </h6>
+                        <code class="user-select-all">{{ transaction.id }}</code>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card border-primary h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-3 text-primary">
+                            <i class="bi bi-box me-1"></i>
+                            Block
+                        </h6>
+                        {% if transaction.block %}
+                            <a href="/explorer/block/{{ transaction.block.id }}" class="badge bg-success text-decoration-none">
+                                <i class="bi bi-box me-1"></i>
+                                Block #{{ transaction.block.id }}
+                            </a>
+                        {% else %}
+                            <span class="badge bg-warning">
+                                <i class="bi bi-hourglass-split me-1"></i>
+                                Pending
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-3 text-secondary">
+                            <i class="bi bi-person me-1"></i>
+                            From
+                        </h6>
+                        <code class="user-select-all">{{ transaction.sender }}</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="card border-secondary h-100">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-3 text-secondary">
+                            <i class="bi bi-person me-1"></i>
+                            To
+                        </h6>
+                        <code class="user-select-all">{{ transaction.recipient }}</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-success h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-coin display-4 text-success mb-3"></i>
+                        <h6 class="card-subtitle mb-2 text-success">Amount</h6>
+                        <p class="display-6 mb-0">{{ transaction.amount }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-warning h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-clock display-4 text-warning mb-3"></i>
+                        <h6 class="card-subtitle mb-2 text-warning">Timestamp</h6>
+                        <p class="mb-0">{{ transaction.timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card border-primary h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-check-circle display-4 text-primary mb-3"></i>
+                        <h6 class="card-subtitle mb-2 text-primary">Status</h6>
+                        {% if transaction.block %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-check-circle me-1"></i>
+                                Confirmed
+                            </span>
+                        {% else %}
+                            <span class="badge bg-warning">
+                                <i class="bi bi-hourglass-split me-1"></i>
+                                Pending
+                            </span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="card border-info">
+                    <div class="card-body">
+                        <h6 class="card-subtitle mb-3 text-info">
+                            <i class="bi bi-key me-1"></i>
+                            Signature
+                        </h6>
+                        <textarea class="form-control font-monospace" rows="3" readonly>{{ transaction.signature }}</textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

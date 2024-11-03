@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block title %}Contract Deployed{% endblock %}
+
+{% block content %}
+<h1>Contract Deployed Successfully</h1>
+
+<div class="alert alert-success">
+    Your smart contract has been deployed to the blockchain.
+</div>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Contract Details</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Contract Address</dt>
+            <dd class="col-sm-9">{{ contract.address }}</dd>
+
+            <dt class="col-sm-3">Created By</dt>
+            <dd class="col-sm-9">{{ contract.creator }}</dd>
+
+            <dt class="col-sm-3">Created At</dt>
+            <dd class="col-sm-9">{{ contract.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') }}</dd>
+
+            <dt class="col-sm-3">Contract Code</dt>
+            <dd class="col-sm-9">
+                <pre class="bg-dark text-light p-3 rounded"><code>{{ contract.code }}</code></pre>
+            </dd>
+
+            <dt class="col-sm-3">Contract ABI</dt>
+            <dd class="col-sm-9">
+                <pre class="bg-dark text-light p-3 rounded"><code>{{ contract.abi }}</code></pre>
+            </dd>
+        </dl>
+    </div>
+</div>
+
+<div class="mt-4">
+    <a href="/contracts/{{ contract.address }}" class="btn btn-primary">View Contract</a>
+    <a href="/contracts" class="btn btn-secondary">View All Contracts</a>
+</div>
+{% endblock %}

@@ -1,0 +1,225 @@
+{% extends "base.html" %}
+
+{% block title %}Blockchain Explorer{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h1 class="display-5 mb-0">
+            <i class="bi bi-search me-2"></i>
+            Blockchain Explorer
+        </h1>
+    </div>
+</div>
+
+<!-- Block Height Display -->
+<div class="card mb-4 bg-primary bg-opacity-10 border-primary">
+    <div class="card-body">
+        <div class="row align-items-center">
+            <div class="col">
+                <h2 class="display-4 mb-0">Block #{{ stats.chain_length }}</h2>
+                <p class="text-muted mb-0">Current Block Height</p>
+            </div>
+            <div class="col-auto">
+                <div class="d-flex align-items-center">
+                    <span class="badge {% if stats.sync_status == 'Synced' %}bg-success{% else %}bg-warning{% endif %} d-flex align-items-center">
+                        <i class="bi {% if stats.sync_status == 'Synced' %}bi-check-circle{% else %}bi-arrow-repeat{% endif %} me-1"></i>
+                        {{ stats.sync_status }}
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Chain Statistics -->
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="card h-100 border-info">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-link-45deg display-4 text-info"></i>
+                </div>
+                <h5 class="card-title text-info">Chain Length</h5>
+                <p class="display-6 mb-0">{{ stats.chain_length }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 border-success">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-arrow-left-right display-4 text-success"></i>
+                </div>
+                <h5 class="card-title text-success">Total Transactions</h5>
+                <p class="display-6 mb-0">{{ stats.total_transactions }}</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 border-warning">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-hdd-network display-4 text-warning"></i>
+                </div>
+                <h5 class="card-title text-warning">Network Nodes</h5>
+                <p class="display-6 mb-0">{{ stats.active_nodes }}/{{ stats.total_nodes }}</p>
+                <small class="text-muted">Active/Total</small>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card h-100 border-primary">
+            <div class="card-body text-center">
+                <div class="mb-3">
+                    <i class="bi bi-shield display-4 text-primary"></i>
+                </div>
+                <h5 class="card-title text-primary">Pending Validations</h5>
+                <p class="display-6 mb-0">{{ stats.pending_blocks }}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Blocks -->
+<div class="card mb-4">
+    <div class="card-header d-flex justify-content-between align-items-center bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-box me-2"></i>
+            Recent Blocks
+        </h5>
+        <a href="/explorer/blocks" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-eye me-1"></i>
+            View All
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>Height</th>
+                        <th>Hash</th>
+                        <th>Timestamp</th>
+                        <th>Transactions</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for block in recent_blocks %}
+                    <tr>
+                        <td>
+                            <a href="/explorer/block/{{ block.id }}" class="text-decoration-none">
+                                <i class="bi bi-box me-1"></i>
+                                {{ block.id }}
+                            </a>
+                        </td>
+                        <td>
+                            <code class="text-truncate d-inline-block" style="max-width: 200px;">
+                                {{ block.hash }}
+                            </code>
+                        </td>
+                        <td>
+                            <i class="bi bi-clock me-1"></i>
+                            {{ block.timestamp.strftime('%Y-%m-%d %H:%M:%S') }}
+                        </td>
+                        <td>
+                            <span class="badge bg-primary">
+                                <i class="bi bi-arrow-left-right me-1"></i>
+                                {{ block.transactions|length }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if block.validation_status == 'validated' %}
+                            <span class="badge bg-success">
+                                <i class="bi bi-shield-check me-1"></i>
+                                Validated
+                            </span>
+                            {% elif block.validation_status == 'invalid' %}
+                            <span class="badge bg-danger">
+                                <i class="bi bi-shield-x me-1"></i>
+                                Invalid
+                            </span>
+                            {% else %}
+                            <span class="badge bg-warning">
+                                <i class="bi bi-shield me-1"></i>
+                                Pending
+                            </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Transactions -->
+<div class="card">
+    <div class="card-header d-flex justify-content-between align-items-center bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-arrow-left-right me-2"></i>
+            Recent Transactions
+        </h5>
+        <a href="/explorer/transactions" class="btn btn-sm btn-outline-primary">
+            <i class="bi bi-eye me-1"></i>
+            View All
+        </a>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th>ID</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Amount</th>
+                        <th>Block</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for tx in recent_transactions %}
+                    <tr>
+                        <td>
+                            <a href="/explorer/transaction/{{ tx.id }}" class="text-decoration-none">
+                                <i class="bi bi-hash me-1"></i>
+                                {{ tx.id }}
+                            </a>
+                        </td>
+                        <td>
+                            <code class="text-truncate d-inline-block" style="max-width: 150px;">
+                                {{ tx.sender }}
+                            </code>
+                        </td>
+                        <td>
+                            <code class="text-truncate d-inline-block" style="max-width: 150px;">
+                                {{ tx.recipient }}
+                            </code>
+                        </td>
+                        <td>
+                            <i class="bi bi-coin me-1"></i>
+                            {{ tx.amount }}
+                        </td>
+                        <td>
+                            {% if tx.block %}
+                                <a href="/explorer/block/{{ tx.block.id }}" class="badge bg-success text-decoration-none">
+                                    <i class="bi bi-box me-1"></i>
+                                    {{ tx.block.id }}
+                                </a>
+                            {% else %}
+                                <span class="badge bg-warning">
+                                    <i class="bi bi-hourglass-split me-1"></i>
+                                    Pending
+                                </span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

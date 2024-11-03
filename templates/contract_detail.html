@@ -1,0 +1,107 @@
+{% extends "base.html" %}
+
+{% block title %}Contract Details{% endblock %}
+
+{% block content %}
+<h1>Smart Contract Details</h1>
+
+<div class="row mt-4">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Contract Information</h2>
+            </div>
+            <div class="card-body">
+                <dl class="row">
+                    <dt class="col-sm-3">Address</dt>
+                    <dd class="col-sm-9">{{ contract.address }}</dd>
+
+                    <dt class="col-sm-3">Creator</dt>
+                    <dd class="col-sm-9">{{ contract.creator }}</dd>
+
+                    <dt class="col-sm-3">Created At</dt>
+                    <dd class="col-sm-9">{{ contract.created_at.strftime('%Y-%m-%d %H:%M:%S UTC') }}</dd>
+                </dl>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Contract State</h2>
+            </div>
+            <div class="card-body">
+                <pre class="bg-dark text-light p-3 rounded"><code>{{ state | tojson(indent=2) }}</code></pre>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Contract Code</h2>
+            </div>
+            <div class="card-body">
+                <pre class="bg-dark text-light p-3 rounded"><code>{{ contract.code }}</code></pre>
+            </div>
+        </div>
+
+        <div class="card mb-4">
+            <div class="card-header">
+                <h2>Call Contract</h2>
+            </div>
+            <div class="card-body">
+                <form action="/contracts/{{ contract.address }}/call" method="post">
+                    <div class="mb-3">
+                        <label for="sender" class="form-label">Sender Public Key</label>
+                        <textarea class="form-control" id="sender" name="sender" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="private_key" class="form-label">Private Key</label>
+                        <textarea class="form-control" id="private_key" name="private_key" rows="3" required></textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="function" class="form-label">Function Name</label>
+                        <input type="text" class="form-control" id="function" name="function" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="arguments" class="form-label">Arguments (JSON array)</label>
+                        <input type="text" class="form-control" id="arguments" name="arguments" value="[]">
+                        <div class="form-text">Example: [1, 2] for function add(a, b)</div>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Call Function</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h2>Contract Calls</h2>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Timestamp</th>
+                        <th>Function</th>
+                        <th>Arguments</th>
+                        <th>Result</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for call in calls %}
+                    <tr>
+                        <td>{{ call.timestamp.strftime('%Y-%m-%d %H:%M:%S UTC') }}</td>
+                        <td>{{ call.function_name }}</td>
+                        <td>{{ call.arguments }}</td>
+                        <td>{{ call.result }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

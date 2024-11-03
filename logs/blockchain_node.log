@@ -1,0 +1,118 @@
+2024-11-02 17:30:45,105 - app - INFO - Blockchain node started
+2024-11-02 17:30:57,650 - app - INFO - Blockchain node started
+2024-11-02 17:37:35,535 - app - INFO - Blockchain node started
+2024-11-02 17:38:22,025 - app - INFO - Blockchain node started
+2024-11-02 17:38:39,100 - app - INFO - Blockchain node started
+2024-11-02 17:38:48,514 - app - INFO - Blockchain node started
+2024-11-02 17:39:01,181 - app - INFO - Blockchain node started
+2024-11-02 17:39:26,166 - app - INFO - Blockchain node started
+2024-11-02 17:43:21,847 - app - INFO - Blockchain node started
+2024-11-02 17:47:40,600 - app - INFO - Blockchain node started
+2024-11-02 17:48:11,617 - app - INFO - Blockchain node started
+2024-11-02 17:49:40,590 - app - INFO - Blockchain node started
+2024-11-02 17:49:55,914 - app - INFO - Blockchain node started
+2024-11-02 17:52:01,478 - app - INFO - Blockchain node started
+2024-11-02 17:53:26,109 - app - INFO - Blockchain node started
+2024-11-02 17:55:33,334 - app - INFO - Blockchain node started
+2024-11-02 17:55:43,837 - app - INFO - Blockchain node started
+2024-11-02 17:56:03,553 - app - INFO - Blockchain node started
+2024-11-02 17:56:52,722 - app - INFO - Blockchain node started
+2024-11-02 18:02:17,674 - app - INFO - Blockchain node started
+2024-11-02 18:05:50,987 - app - INFO - Blockchain node started
+2024-11-02 18:06:40,938 - app - INFO - Blockchain node started
+2024-11-02 18:09:41,190 - app - INFO - Blockchain node started
+2024-11-02 18:09:59,696 - app - INFO - Blockchain node started
+2024-11-02 18:10:27,293 - app - INFO - Blockchain node started
+2024-11-02 18:10:45,680 - app - INFO - Blockchain node started
+2024-11-02 18:12:00,277 - app - INFO - Blockchain node started
+2024-11-02 18:15:21,548 - app - INFO - Blockchain node started
+2024-11-03 06:26:24,100 - app - INFO - Blockchain node started
+2024-11-03 07:22:44,567 - app - INFO - Blockchain node started
+2024-11-03 07:23:39,281 - app - INFO - Blockchain node started
+2024-11-03 07:24:15,373 - app - INFO - Blockchain node started
+2024-11-03 07:37:02,249 - app - INFO - Blockchain node started - Role: primary
+2024-11-03 07:38:35,580 - app - INFO - Blockchain node started - Role: primary
+2024-11-03 07:55:44,487 - app - INFO - Blockchain node started - Role: primary
+2024-11-03 07:55:56,632 - app - INFO - Blockchain node started - Role: primary
+2024-11-03 07:56:29,883 - app - INFO - Blockchain node started - Role: primary
+2024-11-03 07:56:37,770 - app - ERROR - Exception on /monitor/status [GET]
+Traceback (most recent call last):
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+psycopg2.errors.UndefinedTable: relation "block" does not exist
+LINE 3: FROM block) AS anon_1
+             ^
+
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 1455, in wsgi_app
+    response = self.full_dispatch_request()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 869, in full_dispatch_request
+    rv = self.handle_user_exception(e)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 867, in full_dispatch_request
+    rv = self.dispatch_request()
+         ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/flask/app.py", line 852, in dispatch_request
+    return self.ensure_sync(self.view_functions[rule.endpoint])(**view_args)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/monitoring_routes.py", line 15, in monitor_status
+    'total_blocks': Block.query.count(),
+                    ^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/query.py", line 3132, in count
+    self._legacy_from_self(col).enable_eagerloads(False).scalar()
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/query.py", line 2825, in scalar
+    ret = self.one()
+          ^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/query.py", line 2798, in one
+    return self._iter().one()  # type: ignore
+           ^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/query.py", line 2847, in _iter
+    result: Union[ScalarResult[_T], Result[_T]] = self.session.execute(
+                                                  ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 2308, in execute
+    return self._execute_internal(
+           ^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/session.py", line 2190, in _execute_internal
+    result: Result[Any] = compile_state_cls.orm_execute_statement(
+                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/orm/context.py", line 293, in orm_execute_statement
+    result = conn.execute(
+             ^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1416, in execute
+    return meth(
+           ^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/sql/elements.py", line 516, in _execute_on_connection
+    return connection._execute_clauseelement(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1639, in _execute_clauseelement
+    ret = self._execute_context(
+          ^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1848, in _execute_context
+    return self._exec_single_context(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1988, in _exec_single_context
+    self._handle_dbapi_exception(
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 2343, in _handle_dbapi_exception
+    raise sqlalchemy_exception.with_traceback(exc_info[2]) from e
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/base.py", line 1969, in _exec_single_context
+    self.dialect.do_execute(
+  File "/home/runner/NodeConnectBlockchain/.pythonlibs/lib/python3.11/site-packages/sqlalchemy/engine/default.py", line 922, in do_execute
+    cursor.execute(statement, parameters)
+sqlalchemy.exc.ProgrammingError: (psycopg2.errors.UndefinedTable) relation "block" does not exist
+LINE 3: FROM block) AS anon_1
+             ^
+
+[SQL: SELECT count(*) AS count_1 
+FROM (SELECT block.id AS block_id, block.timestamp AS block_timestamp, block.previous_hash AS block_previous_hash, block.hash AS block_hash, block.nonce AS block_nonce, block.validation_status AS block_validation_status, block.validation_timestamp AS block_validation_timestamp, block.validation_errors AS block_validation_errors 
+FROM block) AS anon_1]
+(Background on this error at: https://sqlalche.me/e/20/f405)
+2024-11-03 08:03:50,150 - app - INFO - Blockchain node started - Role: primary
+2024-11-03 08:10:00,587 - app - INFO - Blockchain node started - Role: primary
+2024-11-03 08:10:43,424 - app - INFO - Blockchain node started - Role: primary
+2024-11-03 08:12:08,874 - app - INFO - Blockchain node started - Role: primary

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+
+{% block title %}Deploy Smart Contract{% endblock %}
+
+{% block content %}
+<h1>Deploy Smart Contract</h1>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Contract Deployment</h2>
+    </div>
+    <div class="card-body">
+        <form action="/contracts/deploy" method="post">
+            <div class="mb-3">
+                <label for="creator" class="form-label">Creator Public Key</label>
+                <textarea class="form-control" id="creator" name="creator" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="private_key" class="form-label">Private Key</label>
+                <textarea class="form-control" id="private_key" name="private_key" rows="3" required></textarea>
+            </div>
+            <div class="mb-3">
+                <label for="code" class="form-label">Contract Code</label>
+                <textarea class="form-control" id="code" name="code" rows="10" required></textarea>
+                <div class="form-text">
+                    Write your contract code here. Example:
+<pre>
+def set_value(value):
+    global stored_value
+    stored_value = value
+    return value
+
+def get_value():
+    return stored_value if 'stored_value' in globals() else None
+
+def add(a, b):
+    return a + b
+</pre>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Deploy Contract</button>
+        </form>
+    </div>
+</div>
+
+<a href="/contracts" class="btn btn-secondary">View All Contracts</a>
+{% endblock %}

@@ -1,0 +1,186 @@
+{% extends "base.html" %}
+
+{% block title %}Node Monitor{% endblock %}
+
+{% block content %}
+<div class="row mb-4 align-items-center">
+    <div class="col">
+        <h1 class="display-5 mb-0">
+            <i class="bi bi-display me-2"></i>
+            Node Monitor
+        </h1>
+    </div>
+    <div class="col-auto">
+        <button class="btn btn-primary" onclick="location.reload()">
+            <i class="bi bi-arrow-clockwise me-1"></i>
+            Refresh
+        </button>
+    </div>
+</div>
+
+<!-- Node Configuration -->
+<div class="card mb-4">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-gear me-2"></i>
+            Node Configuration
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Node Role</h5>
+                        <span class="badge {% if system_stats.node_role == 'primary' %}bg-success{% else %}bg-info{% endif %} fs-5">
+                            {{ system_stats.node_role|title }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card border-info">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-info">Node Name</h5>
+                        <p class="mb-0 fs-5">{{ system_stats.node_name }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- System Stats -->
+<div class="card mb-4">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-cpu me-2"></i>
+            System Resources
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">CPU Usage</h5>
+                        <div class="progress mb-2">
+                            <div class="progress-bar" role="progressbar" style="width: {{ system_stats.cpu_percent }}%">
+                                {{ system_stats.cpu_percent }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-success">Memory Usage</h5>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ system_stats.memory_percent }}%">
+                                {{ system_stats.memory_percent }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-warning">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-warning">Disk Usage</h5>
+                        <div class="progress mb-2">
+                            <div class="progress-bar bg-warning" role="progressbar" style="width: {{ system_stats.disk_usage }}%">
+                                {{ system_stats.disk_usage }}%
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Blockchain Stats -->
+<div class="card mb-4">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-box me-2"></i>
+            Blockchain Status
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-info">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-info">Total Blocks</h5>
+                        <p class="display-6">{{ blockchain_stats.total_blocks }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-success">Total Transactions</h5>
+                        <p class="display-6">{{ blockchain_stats.total_transactions }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Last Block Time</h5>
+                        <p class="mb-0">
+                            {% if blockchain_stats.last_block_time %}
+                                {{ blockchain_stats.last_block_time.strftime('%Y-%m-%d %H:%M:%S') }}
+                            {% else %}
+                                No blocks yet
+                            {% endif %}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Network Stats -->
+<div class="card">
+    <div class="card-header bg-body-tertiary">
+        <h5 class="mb-0">
+            <i class="bi bi-hdd-network me-2"></i>
+            Network Status
+        </h5>
+    </div>
+    <div class="card-body">
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="card border-primary">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-primary">Active Nodes</h5>
+                        <p class="display-6">{{ node_stats.active_nodes }}/{{ node_stats.total_nodes }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-success">Network Connections</h5>
+                        <p class="display-6">{{ system_stats.connections }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="card border-info">
+                    <div class="card-body text-center">
+                        <h5 class="card-title text-info">Sync Status</h5>
+                        <span class="badge {% if node_stats.sync_status == 'synced' %}bg-success{% else %}bg-warning{% endif %} fs-5">
+                            {{ node_stats.sync_status|title }}
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

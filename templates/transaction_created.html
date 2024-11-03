@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Transaction Created{% endblock %}
+
+{% block content %}
+<h1>Transaction Created Successfully</h1>
+
+<div class="card mb-4">
+    <div class="card-header">
+        <h2>Transaction Details</h2>
+    </div>
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Sender</dt>
+            <dd class="col-sm-9">{{ transaction.sender }}</dd>
+
+            <dt class="col-sm-3">Recipient</dt>
+            <dd class="col-sm-9">{{ transaction.recipient }}</dd>
+
+            <dt class="col-sm-3">Amount</dt>
+            <dd class="col-sm-9">{{ transaction.amount }}</dd>
+
+            <dt class="col-sm-3">Timestamp</dt>
+            <dd class="col-sm-9">{{ transaction.timestamp }}</dd>
+
+            <dt class="col-sm-3">Signature</dt>
+            <dd class="col-sm-9"><textarea class="form-control" rows="3" readonly>{{ transaction.signature }}</textarea></dd>
+        </dl>
+    </div>
+</div>
+
+<a href="/" class="btn btn-primary">Back to Home</a>
+{% endblock %}
